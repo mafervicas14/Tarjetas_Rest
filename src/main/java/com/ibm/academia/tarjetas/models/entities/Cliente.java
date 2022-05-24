@@ -1,6 +1,7 @@
 package com.ibm.academia.tarjetas.models.entities;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.ibm.academia.tarjetas.enums.NombreTarjetas;
 import com.ibm.academia.tarjetas.enums.Preferencias;
 
 import lombok.Getter;
@@ -28,9 +30,15 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="clientes")
-public class Cliente 
+@Table(name="clientes", schema = "tarjetas")
+public class Cliente implements Serializable
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 873485395320312469L;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +69,10 @@ public class Cliente
 	@Column(name="preferencias")
 	@Enumerated(EnumType.STRING)
 	private Preferencias preferencias;
+	
+	@Column(name="tarjeta_asignada")
+	@Enumerated(EnumType.STRING)
+	private NombreTarjetas tarjetaAsignada;
 	
 	
 	@Column(name="fecha_alta")
