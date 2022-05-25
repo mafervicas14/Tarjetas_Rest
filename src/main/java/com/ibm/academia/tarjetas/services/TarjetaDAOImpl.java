@@ -49,20 +49,16 @@ public class TarjetaDAOImpl extends GenericoDAOImpl<Tarjeta, TarjetaRepository> 
 						if(tarjeta.getSalarioMaximo() >= clienteSalario && tarjeta.getSalarioMinimo() <= clienteSalario) 
 						{
 							tarjetasDisponibles.add(tarjeta.getNombreTarjeta());
-							return new ResponseEntity<List<NombreTarjetas>>(tarjetasDisponibles, HttpStatus.OK);
+							
 						}
 					}
 				}
-			}
+			} return new ResponseEntity<List<NombreTarjetas>>(tarjetasDisponibles, HttpStatus.OK);
 			
 		} else {
 			throw new BadRequestException("Error al tratar de buscar la preferencia");
 		}
 		
-		throw new NotFoundException("No hay planes disponibles para ti");
-		
 	}
-
-	
 
 }

@@ -62,13 +62,13 @@ public class TarjetasController
         return tarjetas;
     }
 	
-	@GetMapping("/aginar/clienteId/{clienteId}")
+	@GetMapping("/buscarTarjetas/clienteId/{clienteId}")
 	public ResponseEntity<?> asginarTarjetaEntity (@PathVariable Long clienteId)
 	{
 		Optional<Cliente> oCliente = clienteDAO.buscarPorId(clienteId);
 		
 		if(!oCliente.isPresent())
-			throw new NotFoundException(String.format("El cliente con ese Id: %d no existe", clienteId));
+			throw new NotFoundException(String.format("El cliente con el Id: %d no existe", clienteId));
 		return tarjetaDAO.tarjetasAceptadas(oCliente.get());
 		
 	}
