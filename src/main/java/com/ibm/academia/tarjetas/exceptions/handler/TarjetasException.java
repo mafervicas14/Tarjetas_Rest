@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -15,7 +16,7 @@ import com.ibm.academia.tarjetas.exceptions.NotFoundException;
 public class TarjetasException 
 {
 	
-	 @ExceptionHandler(value = BadRequestException.class)
+	    @ExceptionHandler(value = BadRequestException.class)
 	    public ResponseEntity<Object> formatoInvalidoException(BadRequestException exception)
 	    {
 	        Map<String, Object> respuesta = new HashMap<String, Object>();
@@ -29,6 +30,14 @@ public class TarjetasException
 	        Map<String, Object> respuesta = new HashMap<String, Object>();
 	        respuesta.put("error", exception.getMessage());
 	        return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
+	    }
+	    
+	    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+	    public ResponseEntity<?> noSePuedeLeerExcepcion(HttpMessageNotReadableException exception)
+	    {
+	        Map<String, Object> respuesta = new HashMap<String, Object>();
+	        respuesta.put("error", exception.getMessage());
+	        return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
 	    }
 
 }

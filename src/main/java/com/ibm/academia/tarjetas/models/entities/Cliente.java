@@ -19,6 +19,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+
 import com.ibm.academia.tarjetas.enums.NombreTarjetas;
 import com.ibm.academia.tarjetas.enums.Preferencias;
 
@@ -51,21 +52,18 @@ public class Cliente implements Serializable
 	@Column(name="nombre")
 	private String nombre;
 	
-	@NotNull
-	@NotEmpty
+	@NotNull(message = "No puede ser nulo")
 	@Min(value = 18, message = "Edad mínima es de 18")
     @Max(value = 75, message = "Edad máxima 75")
 	@Column(name="edad")
     private Integer edad;
 	
-	@NotNull
-	@NotEmpty
+	@NotNull(message = "No puede ser nulo")
 	@Min(value = 7000, message = "El salario minimo es de $7,000")
 	@Column(name="salario_mensual")
 	private Double salarioMensual;
 	
 	@NotNull
-	@NotEmpty
 	@Column(name="preferencias")
 	@Enumerated(EnumType.STRING)
 	private Preferencias preferencias;
