@@ -1,14 +1,17 @@
 package com.ibm.academia.tarjetas.models.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,6 +19,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ibm.academia.tarjetas.enums.NombreTarjetas;
 import com.ibm.academia.tarjetas.enums.Preferencias;
 
@@ -75,6 +79,11 @@ public class Tarjeta implements Serializable
 	@Max(value = 75, message = "Edad máxima 75")
 	@Column(name="edad_maxima")
 	private Double edadMaxima;
+	
+
+	@OneToMany(mappedBy = "tarjeta", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"cliente"})
+	private Set<Cliente> clientes;
 	
 
 }
