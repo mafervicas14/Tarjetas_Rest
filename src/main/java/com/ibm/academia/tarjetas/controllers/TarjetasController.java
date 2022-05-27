@@ -2,8 +2,8 @@ package com.ibm.academia.tarjetas.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.academia.tarjetas.exceptions.BadRequestException;
 import com.ibm.academia.tarjetas.exceptions.NotFoundException;
+import com.ibm.academia.tarjetas.mapper.TarjetaMapper;
+import com.ibm.academia.tarjetas.models.dto.TarjetaDTO;
 import com.ibm.academia.tarjetas.models.entities.Cliente;
 import com.ibm.academia.tarjetas.models.entities.Tarjeta;
 import com.ibm.academia.tarjetas.services.ClienteDAO;
@@ -68,7 +69,7 @@ public class TarjetasController
 	 * Endpoint para buscarTarjetas posibles según información del cliente
 	 * @param clienteId Id de Objeto Cliente
 	 * @return Una lista de posibles tarjetas que se les pueden asignar
-	 * @NotFoundException en casi de que el cliente con el Id solicitado no exista
+	 * @NotFoundException en caso de que el cliente con el Id solicitado no exista
 	 * @author Equipo7 5/25/2022
 	 */
 	@GetMapping("/buscarTarjetas/clienteId/{clienteId}")
@@ -80,6 +81,27 @@ public class TarjetasController
 			throw new NotFoundException(String.format("El cliente con el Id: %d no existe", clienteId));
 		return tarjetaDAO.tarjetasAceptadas(oCliente.get());
 		
+	}
+	
+	
+	
+	/**
+	 * Endpoint para Listar únicamente todas las tarjetas
+	 * @return Lista de todas las tarjetas
+	 * @NotFoundException en caso de que no existan tarjetas
+	 * @author Equipo7 5/27/2022
+	 */
+	@GetMapping("/lista/tarjetas/dto")
+	public ResponseEntity<?> ObtenerTarjetasDTO()
+	{
+		List<Tarjeta> tarjetas = (List<Tarjeta>)tarjetaDAO.buscarTodos();
+		if(tarjetas.isEmpty())
+			throw new BadRequestException("No existen tarjetas");
+		List<TarjetaDTO> listaTarjetas = tarjetas
+				.stream()
+				.map(TarjetaMapper::mapTarjeta)
+				.collect(Collectors.toList());
+		return new ResponseEntity<List<TarjetaDTO>>(listaTarjetas, HttpStatus.OK);
 	}
 
 }
