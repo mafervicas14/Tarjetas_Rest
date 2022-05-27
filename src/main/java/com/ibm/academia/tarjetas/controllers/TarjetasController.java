@@ -52,6 +52,7 @@ public class TarjetasController
 	 * @return lista de tarjetas
 	 * @BadRequestException En caso de que no existan Tarjetas (Lista vacía)
 	 * @author Equipo7
+	 *  @author Equipo7 5/24/2022
 	 */
 	@GetMapping("/lista/tarjetas")
     public List<Tarjeta> buscarTodas()
@@ -62,8 +63,16 @@ public class TarjetasController
         return tarjetas;
     }
 	
+	
+	/**
+	 * Endpoint para buscarTarjetas posibles según información del cliente
+	 * @param clienteId Id de Objeto Cliente
+	 * @return Una lista de posibles tarjetas que se les pueden asignar
+	 * @NotFoundException en casi de que el cliente con el Id solicitado no exista
+	 * @author Equipo7 5/25/2022
+	 */
 	@GetMapping("/buscarTarjetas/clienteId/{clienteId}")
-	public ResponseEntity<?> asginarTarjetaEntity (@PathVariable Long clienteId)
+	public ResponseEntity<?> buscarTarjetaEntity (@PathVariable Long clienteId)
 	{
 		Optional<Cliente> oCliente = clienteDAO.buscarPorId(clienteId);
 		
